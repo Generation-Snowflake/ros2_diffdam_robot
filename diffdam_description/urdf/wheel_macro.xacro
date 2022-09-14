@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!-- 
+  we will use macros, which are like functions, to reduce the remaining code in diffdam.xacro file.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!--
+      we have defined two macros, their purpose is to take parameters and create the required element (link element).
+
+      The first macro is named link_wheel and it accepts only one parameter name. It creates a wheel link with the name passed in the parameter. 
+    -->
+    <xacro:macro name="link_wheel" params="name mass length radius">
+        <link name="${name}">
+            <inertial>
+              <mass value="${mass}"/> <!--0.2-->
+              <origin rpy="0 0 0" xyz="0 0 0"/>
+              <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
+            </inertial>
+            <collision name="${name}_collision">
+              <origin rpy="0 0 0" xyz="0 0 0"/>
+              <geometry>
+                <cylinder length="${length}" radius="${radius}"/> <!--0.04 0.1-->
+              </geometry>
+            </collision>
+            <visual name="${name}_visual">
+              <origin rpy="0 0 0" xyz="0 0 0"/>
+              <geometry>
+                <cylinder length="${length}" radius="${radius}"/> <!--0.04 0.1-->
+              </geometry>
+              <material name="grey" />
+            </visual>
+        </link>
+    </xacro:macro>
+
+    <!--
+      The second macro accepts three parameters name, child and origin_xyz and it creates a joint link.
+    -->
+    <xacro:macro name="joint_wheel" params="name parent child origin_xyz">
+      <joint name="${name}" type="continuous">
+        <origin rpy="-${pi/2} 0 0" xyz="${origin_xyz}"/>
+        <parent link="${parent}"/>
+        <child link="${child}"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="10000" velocity="1000"/>
+        <joint_properties damping="1.0" friction="1.0"/>
+      </joint>
+    </xacro:macro>
+
+    <!-- 
+      new macro for controlling the moment of inertia of the sensor cilinder
+    -->
+    <xacro:macro name="cylinder_inertia" params="mass r l"> 
+      <inertia ixx="${mass*(3*r*r+l*l)/12}" ixy = "0" ixz = "0" iyy="${mass*(3*r*r+l*l)/12}" iyz = "0" izz="${mass*(r*r)/2}" /> 
+    </xacro:macro>
+    
+    <xacro:macro name="inertial_sphere" params="mass radius *origin">
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(2/5) * mass * (radius*radius)}" ixy="0.0" ixz="0.0"
+                    iyy="${(2/5) * mass * (radius*radius)}" iyz="0.0"
+                    izz="${(2/5) * mass * (radius*radius)}" />
+        </inertial>
+    </xacro:macro>  
+
+
+    <xacro:macro name="inertial_box" params="mass x y z *origin">
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(1/12) * mass * (y*y+z*z)}" ixy="0.0" ixz="0.0"
+                    iyy="${(1/12) * mass * (x*x+z*z)}" iyz="0.0"
+                    izz="${(1/12) * mass * (x*x+y*y)}" />
+        </inertial>
+    </xacro:macro>
+
+    
+</robot>
