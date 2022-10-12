@@ -1,0 +1,266 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+  <model name="diffdam_robot">
+    <self_collide>1</self_collide>
+    <static>false</static>
+
+        <link name='chassis_visual'>
+          <visual name='visual'>
+            <pose>0 0 0.087 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>.249 .187 .13</size>
+              </box>
+            </geometry>
+          </visual>
+        </link>
+
+        <link name='chassis'>
+          <pose>0 0 0.087 0 0 3.14</pose>
+          <inertial>
+            <inertia>
+              <ixx>0.0395416666667</ixx>
+              <ixy>0.000</ixy>
+              <ixz>0.000</ixz>
+              <iyy>0.106208333333</iyy>
+              <iyz>0.000</iyz>
+              <izz>0.106208333333</izz>
+            </inertia>
+            <mass>5.0</mass>
+          </inertial>
+          <collision name='collision'>
+            <geometry>
+              <box>
+                <size>0.249 0.187 0.13</size>
+              </box>
+            </geometry>
+          </collision>
+
+          <collision name='caster_collision_right'>
+            <pose>-0.095 0.0225 -0.075 0 0 0</pose>
+            <geometry>
+              <sphere>
+                <radius>0.01</radius>
+              </sphere>
+            </geometry>
+            <surface>
+              <friction>
+                <ode>
+                  <mu>0</mu>
+                  <mu2>0</mu2>
+                  <slip1>1</slip1>
+                  <slip2>1</slip2>
+                </ode>
+              </friction>
+            </surface>
+          </collision>
+        
+        <collision name='caster_collision_left'>
+            <pose>-0.095 -0.0225 -0.075 0 0 0</pose>
+            <geometry>
+              <sphere>
+                <radius>0.01</radius>
+              </sphere>
+            </geometry>
+            <surface>
+              <friction>
+                <ode>
+                  <mu>0</mu>
+                  <mu2>0</mu2>
+                  <slip1>1</slip1>
+                  <slip2>1</slip2>
+                </ode>
+              </friction>
+            </surface>
+          </collision>
+        </link>
+        
+        <link name="left_wheel">
+          <pose>-0.07 0.104 0.035 0 1.5707 1.5707</pose>
+          <inertial>
+            <mass>100.0</mass>
+            <inertia>
+              <!-- <ixx>0.027225</ixx>
+              <ixy>0.0</ixy>
+              <ixz>0.0</ixz>
+              <iyy>0.027225</iyy>
+              <iyz>0.0</iyz>
+              <izz>0.05445</izz> -->
+            </inertia>
+          </inertial>
+          <collision name="collision">
+            <geometry>
+              <cylinder>
+                <radius>0.033</radius>
+                <length>0.018</length>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode>
+                  <mu>100000.0</mu>
+                  <mu2>100000.0</mu2>
+                </ode>
+              </friction>
+            </surface>
+          </collision>
+          <visual name="visual">
+            <geometry>
+              <cylinder>
+                <radius>.033</radius>
+                <length>.018</length>
+              </cylinder>
+            </geometry>
+          </visual>
+        </link>
+
+        <link name="right_wheel">
+          <pose>-0.07 -0.104 0.035 0 1.5707 1.5707</pose>
+          <inertial>
+            <mass>100.0</mass>
+            <inertia>
+              <!-- <ixx>0.027225</ixx>
+              <ixy>0.0</ixy>
+              <ixz>0.0</ixz>
+              <iyy>0.027225</iyy>
+              <iyz>0.0</iyz>
+              <izz>0.05445</izz> -->
+            </inertia>
+          </inertial>
+          <collision name="collision">
+            <geometry>
+              <cylinder>
+                <radius>0.033</radius>
+                <length>0.018</length>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode>
+                  <mu>100000.0</mu>
+                  <mu2>100000.0</mu2>
+                </ode>
+              </friction>
+            </surface>
+          </collision>
+          <visual name="visual">
+            <geometry>
+              <cylinder>
+                <radius>.033</radius>
+                <length>.018</length>
+              </cylinder>
+            </geometry>
+          </visual>
+        </link> 
+        
+        <joint type="revolute" name="left_wheel_hinge">
+          <pose>0 0 0 0 0 0</pose>
+          <child>left_wheel</child>
+          <parent>chassis</parent>
+          <axis>
+            <xyz>0 1 0</xyz>
+          </axis>
+        </joint>
+
+        <joint type="revolute" name="right_wheel_hinge">
+          <pose>0 0 0 0 0 0</pose>
+          <child>right_wheel</child>
+          <parent>chassis</parent>
+          <axis>
+            <xyz>0 1 0</xyz>
+          </axis>
+        </joint>
+
+        <link name="rplidar">
+          <pose>0 0 0.187 0 0 0</pose>
+          <inertial>
+            <mass>0.17</mass>
+            <inertia>
+              <!-- <ixx>0.001</ixx>
+              <ixy>0.000</ixy>
+              <ixz>0.000</ixz>
+              <iyy>0.001</iyy>
+              <iyz>0.000</iyz>
+              <izz>0.001</izz> -->
+            </inertia>
+          </inertial>
+          <collision name="rplidar_collision">
+            <geometry>
+              <cylinder>
+                <radius>.06</radius>
+                <length>.072</length>
+              </cylinder>
+            </geometry>
+          </collision>
+          <visual name="rplidar_visual">
+            <geometry>
+              <cylinder>
+                <radius>.06</radius>
+                <length>.072</length>
+              </cylinder>
+            </geometry>
+          </visual>
+          
+          <sensor type="ray" name="rplidar_sensor">
+            <pose>0 0 0.01 0 0 0</pose>
+            <ray>
+              <scan>
+                <horizontal>
+                  <sample>2000</sample>
+                  <resolution>1</resolution>
+                  <min_angle>0</min_angle>
+                  <max_angle>6.28</max_angle>
+                </horizontal>
+              </scan>
+              <range>
+                <min>0.15</min>
+                <max>6</max>
+                <resolution>1.5</resolution>
+              </range>
+            </ray>
+            <always_on>1</always_on>
+            <update_rate>30</update_rate>
+            <visualize>true</visualize>
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+              <topicName>/laser/scan</topicName>
+              <frameName>rplidar_sensor</frameName>
+            </plugin>
+          </sensor>
+        </link>
+        
+        <joint name="lidar_joint" type="fixed">
+          <parent>chassis</parent>
+          <child>rplidar</child>
+          <pose>0 0 0 0 0 0</pose>
+        </joint>
+
+
+        <plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
+
+          <ros>
+            <namespace>/diffdam_robot</namespace>
+          </ros>
+
+          <!-- wheels -->
+          <left_joint>left_wheel_hinge</left_joint>
+          <right_joint>right_wheel_hinge</right_joint>
+
+          <!-- kinematics -->
+          <wheel_separation>0.187</wheel_separation>
+          <wheel_diameter>0.066</wheel_diameter>
+
+          <!-- limits -->
+          <max_wheel_torque>20</max_wheel_torque>
+          <max_wheel_acceleration>1.0</max_wheel_acceleration>
+
+          <!-- output -->
+          <publish_odom>true</publish_odom>
+          <publish_odom_tf>true</publish_odom_tf>
+
+          <odometry_frame>odom</odometry_frame>
+          <robot_base_frame>base_footprint</robot_base_frame>
+
+        </plugin>
+        
+  </model>
+</sdf>
