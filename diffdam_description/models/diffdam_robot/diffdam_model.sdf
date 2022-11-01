@@ -13,7 +13,7 @@
               <iyz>0.000</iyz>
               <izz>0.106208333333</izz>
             </inertia>
-            <mass>100.0</mass>
+            <mass>100</mass>
           </inertial>
           <visual name='visual'>
             <geometry>
